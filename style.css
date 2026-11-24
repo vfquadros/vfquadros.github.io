@@ -1,106 +1,94 @@
 :root {
-  --paper: #fcfbf8; --ink: #1c1b18; --muted: #615d56; --rule: #dcd8cf; --accent: #8c2b1d;
+  --paper: #fff; --ink: #333; --accent: #8c2b1d;
+  /* Bootstrap 3 .btn-default border, then its hover, focus and pressed shades */
+  --rule: #ccc; --hover: #e6e6e6; --hover-rule: #adadad; --focus-rule: #8c8c8c; --press: #d4d4d4;
   --weight: 500;
-  --serif: "Spectral", Georgia, serif;
-  --sans: "Archivo Narrow", "Arial Narrow", sans-serif;
-  /* label | text: the header and every table row share these tracks */
-  --cols: 11rem minmax(0, 1fr);
-  --text: 2;
-  --gap: clamp(1.25rem, 3.2vw, 2.5rem);
   color-scheme: light dark;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #161513; --ink: #ebe7df; --muted: #a8a399; --rule: #35332f; --accent: #ef5350;
+    --paper: #181818; --ink: #ddd; --accent: #ef5350;
+    --rule: #484848; --hover: #303030; --hover-rule: #676767; --focus-rule: #878787; --press: #414141;
     --weight: 400; /* light text on dark reads heavier */
   }
 }
 
 * { margin: 0; box-sizing: border-box; }
 
+/* two sizes: 1.125rem for text, 1.5rem for titles; buttons keep Bootstrap's 12px */
 body {
-  width: min(52rem, 90%);
+  width: min(46rem, 90%);
   margin: auto;
   padding: clamp(2.5rem, 7vw, 4.5rem) 0 4rem;
   background: var(--paper);
   color: var(--ink);
-  font: var(--weight) 1.125rem/1.6 var(--serif);
+  font: var(--weight) 1.125rem/1.6 "Spectral", Georgia, serif;
   overflow-wrap: anywhere;
   text-wrap: pretty;
 }
+h1, h2, h3 { font: inherit; font-size: 1.5rem; line-height: 1.25; text-wrap: balance; }
 
 a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: .2em; }
 a:hover { color: var(--ink); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 ::selection { background: var(--accent); color: var(--paper); }
 
-header, article {
-  display: grid;
-  grid-template-columns: var(--cols);
-  column-gap: var(--gap);
-}
-
 /* the 1fr row takes any height the photo and links have beyond the text */
-header { grid-template-rows: auto auto 1fr; }
+header {
+  display: grid;
+  grid-template: auto auto 1fr / 11rem minmax(0, 1fr);
+  column-gap: clamp(1.25rem, 3.2vw, 2.5rem);
+}
 header > div { grid-area: 1 / 1 / -1; }
-header img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  border: 1px solid var(--rule);
-}
+header > :not(div) { grid-column: 2; }
+header img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
 nav { display: flex; flex-wrap: wrap; justify-content: space-between; column-gap: 1rem; margin-top: .5rem; }
-nav a { text-decoration: none; }
 /* trimmed to cap height so the name's top meets the photo's top edge */
-h1 {
-  grid-column: 2 / -1;
-  padding-bottom: .35em;
-  border-bottom: 1px solid var(--rule);
-  font: 400 clamp(2.25rem, 1.5rem + 3vw, 3rem)/1.1 var(--serif);
-  text-box: trim-both cap alphabetic;
-  text-wrap: balance;
-}
-address {
-  grid-column: 2 / -1;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-content: start;
-  column-gap: 2rem;
-  margin-top: .5rem;
-  color: var(--muted);
-}
-address a { font-style: normal; }
-header > p { grid-column: var(--text); margin-top: 1.5rem; }
+h1 { text-box: trim-both cap alphabetic; }
+address { margin-top: .75rem; font-style: normal; }
+header > p { margin-top: 1.5rem; }
 
-h2, h3, nav a, footer a {
-  font: 500 .8125rem/1.5 var(--sans);
-  letter-spacing: .1em;
-  text-transform: uppercase;
-}
-h2 { margin: 4rem 0 .75rem; color: var(--accent); }
+h2 { margin: 3.5rem 0 1.5rem; padding-bottom: .5rem; border-bottom: 1px solid var(--rule); }
+article + article { margin-top: 2.5rem; }
+h3 + p { margin-top: .25rem; }
 
-article {
-  align-items: baseline;
-  padding: 1.1rem 0 1.3rem;
-  border-top: 1px solid var(--rule);
+/* Bootstrap 3 .btn-group-xs > .btn-default, as on jdingel.com */
+footer { display: flex; flex-wrap: wrap; margin-bottom: .5rem; }
+footer a {
+  position: relative;
+  padding: 1px 5px;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 12px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-decoration: none;
+  white-space: nowrap;
 }
-h2 + article { border-top: 2px solid var(--ink); }
-article:last-child { border-bottom: 4px double var(--ink); }
-article > * { grid-column: var(--text); }
-/* spanning rows lets a long label wrap without pushing the text apart */
-article h3 { grid-area: span 3 / 1; }
-cite { font-style: normal; font-weight: 600; text-wrap: balance; }
-small { font-size: 1em; font-style: italic; color: var(--muted); }
-article p { margin-top: .45rem; }
-footer { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .8rem; }
-footer a { padding: .4em .75em .3em; border: 1px solid var(--rule); text-decoration: none; }
-footer a:hover { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+footer a + a { margin-left: -1px; }
+footer a:not(:last-child) { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+footer a:not(:first-child) { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+footer a:focus {
+  z-index: 2;
+  background: var(--hover);
+  border-color: var(--focus-rule);
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+footer a:hover { z-index: 2; background: var(--hover); border-color: var(--hover-rule); }
+footer a:active {
+  z-index: 2;
+  background: var(--hover);
+  border-color: var(--hover-rule);
+  outline: 0;
+  box-shadow: inset 0 3px 5px rgb(0 0 0 / .125);
+}
+footer a:active:is(:hover, :focus) { background: var(--press); border-color: var(--focus-rule); }
+footer a:active:focus { outline: 5px auto -webkit-focus-ring-color; }
 
 @media (max-width: 45rem) {
-  :root { --cols: minmax(0, 1fr); --text: 1 / -1; }
   header { grid-template: auto 1fr / 5.5rem minmax(0, 1fr); }
+  header > p { grid-column: 1 / -1; }
   h2 { margin-top: 3rem; }
 }
